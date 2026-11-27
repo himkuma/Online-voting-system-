@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Voting System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="brand">🗳️ Vote<span>Online</span></div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#candidates">Candidates</a>
+      <a href="#results">Results</a>
+    </nav>
+    <div id="navUser">Guest</div>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <p class="eyebrow">YOUR VOICE MATTERS</p>
+      <h1>Your Vote.<br><span>Your Choice.</span></h1>
+      <p>Welcome to our Online Voting System demo.
+         Choose your candidate and cast your vote.</p>
+      <a class="primary-btn" href="#auth">Get Started →</a>
+    </div>
+    <div class="hero-icon">🗳️</div>
+  </section>
+
+  <main class="container">
+
+    <!-- Login and Registration -->
+    <section class="panel auth-panel" id="auth">
+      <h2>Voter Account</h2>
+      <p class="muted">Register a demo account or log in.</p>
+
+      <div class="tabs">
+        <button id="registerTab" class="tab active"
+                type="button" onclick="showAuth('register')">
+          Register
+        </button>
+        <button id="loginTab" class="tab"
+                type="button" onclick="showAuth('login')">
+          Login
+        </button>
+      </div>
+
+      <form id="registerForm">
+        <label for="regName">Full Name</label>
+        <input id="regName" type="text" maxlength="60"
+               placeholder="Enter your name" required>
+
+        <label for="regId">Voter ID (demo)</label>
+        <input id="regId" type="text" maxlength="30"
+               placeholder="Example: STUDENT101" required>
+
+        <label for="regPassword">Password</label>
+        <input id="regPassword" type="password" minlength="4"
+               maxlength="100" placeholder="Create a password" required>
+
+        <button class="primary-btn full" type="submit">
+          Create Account
+        </button>
+      </form>
+
+      <form id="loginForm" hidden>
+        <label for="loginId">Voter ID</label>
+        <input id="loginId" type="text" maxlength="30"
+               placeholder="Enter your voter ID" required>
+
+        <label for="loginPassword">Password</label>
+        <input id="loginPassword" type="password"
+               placeholder="Enter password" required>
+
+        <button class="primary-btn full" type="submit">
+          Login
+        </button>
+      </form>
+
+      <p id="authMessage" class="message" aria-live="polite"></p>
+
+      <button id="logoutBtn" class="secondary-btn full"
+              type="button" onclick="logout()" hidden>
+        Logout
+      </button>
+    </section>
+
+    <!-- Voting -->
+    <section class="section" id="candidates">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">MAKE YOUR CHOICE</p>
+          <h2>Meet the Candidates</h2>
+        </div>
+        <span class="demo-badge">DEMO ELECTION</span>
+      </div>
+
+      <p class="muted" id="voteMessage">
+        Login to cast your vote.
+      </p>
+
+      <div class="candidate-grid" id="candidateList"></div>
+    </section>
+
+    <!-- Results -->
+    <section class="panel results-panel" id="results">
+      <p class="eyebrow">ELECTION STATISTICS</p>
+      <h2>Live Results</h2>
+      <p class="muted">Results update when a demo vote is submitted.</p>
+
+      <div class="stats">
+        <div class="stat-card">
+          <span>Total Votes</span>
+          <strong id="totalVotes">0</strong>
+        </div>
+        <div class="stat-card">
+          <span>Candidates</span>
+          <strong id="totalCandidates">3</strong>
+        </div>
+      </div>
+
+      <div id="resultsList"></div>
+
+      <p class="muted small">
+        Results are based only on this browser's demo data.
+      </p>
+    </section>
+
+    <!-- Demo Admin Panel -->
+    <section class="panel admin-panel">
+      <h2>Admin Dashboard</h2>
+      <p class="muted">
+        Demo access only. This is not a secure administrator login.
+      </p>
+      <form id="adminForm">
+        <label for="adminPassword">Demo Admin Password</label>
+        <input id="adminPassword" type="password"
+               placeholder="Enter demo password" required>
+        <button class="secondary-btn" type="submit">
+          View Admin Summary
+        </button>
+      </form>
+
+      <div id="adminSummary" hidden>
+        <h3>Election Summary</h3>
+        <p id="adminStats"></p>
+        <button class="danger-btn" type="button"
+                onclick="resetDemo()">
+          Reset All Demo Data
+        </button>
+      </div>
+      <p id="adminMessage" class="message" aria-live="polite"></p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 VoteOnline | Educational Demo Project</p>
+    <p>Not for real elections or official voting.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
