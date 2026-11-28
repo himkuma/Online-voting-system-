@@ -1,7 +1,7 @@
 
 let votes = {
-    Hardik chadva: 0,
-    megna mam: 0,
+    Ram: 0,
+    Shyam: 0,
     Rohit: 0
 };
 
@@ -25,8 +25,8 @@ function vote(candidate) {
     votes[candidate]++;
     voted.push(voter);
 
-    document.getElementById("r").innerText = votes.Hardik chadva;
-    document.getElementById("a").innerText = votes.megna mam;
+    document.getElementById("r").innerText = votes.Ram;
+    document.getElementById("a").innerText = votes.Shyam;
     document.getElementById("ro").innerText = votes.Rohit;
 
     document.getElementById("message").innerText =
