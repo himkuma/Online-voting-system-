@@ -1,175 +1,59 @@
-"use strict";
-
-// Online Voting System - Educational Demo
-
-const CANDIDATES = [
-  {
-    id: "candidate1",
-    name: "Rahul Sharma",
-    party: "Progress Party",
-    symbol: "🌅"
-  },
-  {
-    id: "candidate2",
-    name: "Priya Verma",
-    party: "Unity Party",
-    symbol: "🌳"
-  },
-  {
-    id: "candidate3",
-    name: "Aman Singh",
-    party: "Development Party",
-    symbol: "⭐"
-  }
-];
-
-const USERS_KEY = "ovs_demo_users_v1";
-const VOTES_KEY = "ovs_demo_votes_v1";
-const SESSION_KEY = "ovs_demo_session_v1";
-
-let users = readStorage(USERS_KEY, {});
-let votes = readStorage(VOTES_KEY, {});
-let currentUserId = localStorage.getItem(SESSION_KEY) || "";
-
-function readStorage(key, fallback) {
-  try {
-    const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : fallback;
-  } catch (error) {
-    return fallback;
-  }
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #74ebd5, #9face6);
+    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
-function saveData() {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-  localStorage.setItem(VOTES_KEY, JSON.stringify(votes));
+.container {
+    background: white;
+    width: 350px;
+    margin: 60px auto;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
 }
 
-function getUser() {
-  return users[currentUserId] || null;
+h2 {
+    color: #222;
+    margin-bottom: 20px;
 }
 
-function setMessage(id, text, success = false) {
-  const element = document.getElementById(id);
-  element.textContent = text;
-  element.style.color = success ? "#16803c" : "#c62828";
+h3 {
+    color: #444;
 }
 
-// Switch between Register and Login
-
-function showAuth(mode) {
-  const isRegister = mode === "register";
-
-  document.getElementById("registerForm").hidden = !isRegister;
-  document.getElementById("loginForm").hidden = isRegister;
-
-  document.getElementById("registerTab")
-    .classList.toggle("active", isRegister);
-
-  document.getElementById("loginTab")
-    .classList.toggle("active", !isRegister);
-
-  setMessage("authMessage", "");
+input {
+    width: 85%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
 }
 
-// Register a demo voter
+button {
+    width: 90%;
+    padding: 12px;
+    margin: 8px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
 
-document.getElementById("registerForm").addEventListener(
-  "submit",
-  function (event) {
-    event.preventDefault();
+button:hover {
+    background: #1e40af;
+}
 
-    const name = document.getElementById("regName")
-      .value.trim();
+p {
+    font-size: 17px;
+    color: #333;
+}
 
-    const voterId = document.getElementById("regId")
-      .value.trim().toLowerCase();
-
-    const password = document.getElementById("regPassword")
-      .value;
-
-    if (!name || !voterId || !password) {
-      setMessage("authMessage", "Please fill in all fields.");
-      return;
-    }
-
-    if (Object.prototype.hasOwnProperty.call(users, voterId)) {
-      setMessage(
-        "authMessage",
-        "This demo Voter ID is already registered. Please log in."
-      );
-      return;
-    }
-
-    // Demo only: real applications must use a secure backend
-    // and properly hashed passwords.
-    users[voterId] = {
-      name: name,
-      password: password,
-      votedFor: null
-    };
-
-    try {
-      saveData();
-    } catch (error) {
-      delete users[voterId];
-      setMessage("authMessage", "Could not save account data.");
-      return;
-    }
-
-    currentUserId = voterId;
-    localStorage.setItem(SESSION_KEY, voterId);
-
-    document.getElementById("registerForm").reset();
-
-    setMessage(
-      "authMessage",
-      "Registration successful! You are now logged in.",
-      true
-    );
-
-    updateUI();
-  }
-);
-
-// Log in an existing demo voter
-
-document.getElementById("loginForm").addEventListener(
-  "submit",
-  function (event) {
-    event.preventDefault();
-
-    const voterId = document.getElementById("loginId")
-      .value.trim().toLowerCase();
-
-    const password = document.getElementById("loginPassword")
-      .value;
-
-    const user = users[voterId];
-
-    if (!user || user.password !== password) {
-      setMessage(
-        "authMessage",
-        "Invalid Voter ID or password."
-      );
-      return;
-    }
-
-    currentUserId = voterId;
-    localStorage.setItem(SESSION_KEY, voterId);
-
-    document.getElementById("loginForm").reset();
-
-    setMessage("authMessage", "Login successful!", true);
-    updateUI();
-  }
-);
-
-// Log out
-
-function logout() {
-  currentUserId = "";
-  localStorage.removeItem(SESSION_KEY);
-
-  document.getElementById
+#message {
+    color: green;
+    font-size: 18px;
 }
