@@ -1,167 +1,116 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Voting System</title>
-  <link rel="stylesheet" href="style.css">
+    <title>Online Voting System</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #e8f0ff;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            width: 350px;
+            margin: 50px auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px gray;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 8px;
+            width: 85%;
+        }
+
+        button {
+            background: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        h2 {
+            color: blue;
+        }
+    </style>
 </head>
+
 <body>
 
-  <header class="navbar">
-    <div class="brand">🗳️ Vote<span>Online</span></div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#candidates">Candidate</a>
-      <a href="#results">Results</a>
-    </nav>
-    <div id="navUser">Guest</div>
-  </header>
+<div class="container">
 
-  <section class="hero" id="home">
-    <div class="hero-content">
-      <p class="eyebrow">YOUR VOICE MATTERS</p>
-      <h1>Your Vote.<br><span>Your Choice.</span></h1>
-      <p>Welcome to our Online Voting System demo result.
-         Choose your candidate and cast your vote only one.</p>
-      <a class="primary-btn" href="#auth">Get Started →</a>
-    </div>
-    <div class="hero-icon">🗳️</div>
-  </section>
+    <h2>Online Voting System</h2>
 
-  <main class="container">
+    <input type="text" id="name"
+    placeholder="Enter Your Name">
 
-    <!-- Login and Registration -->
-    <section class="panel auth-panel" id="auth">
-      <h2>Voter Account</h2>
-      <p class="muted">Register a demo account or log in.</p>
+    <input type="text" id="voter"
+    placeholder="Enter Voter ID">
 
-      <div class="tabs">
-        <button id="registerTab" class="tab active"
-                type="button" onclick="showAuth('register')">
-          
-          Register
-        </button>
-        <button id="loginTab" class="tab"
-                type="button" onclick="showAuth('login')">
-          Login
-        </button>
-      </div>
+    <h3>Select Your Candidate</h3>
 
-      <form id="registerForm">
-        <label for="regName">Full Name</label>
-        <input id="regName" type="text" maxlength="60"
-               placeholder="Enter your name" required>
+    <button onclick="vote('Rahul')">
+        Vote Rahul
+    </button>
 
-        <label for="regId">Voter ID (demo)</label>
-        <input id="regId" type="text" maxlength="30"
-               placeholder="Example: STUDENT101" required>
+    <button onclick="vote('Aman')">
+        Vote Aman
+    </button>
 
-        <label for="regPassword">Password</label>
-        <input id="regPassword" type="password" minlength="4"
-               maxlength="100" placeholder="Create a password" required>
+    <button onclick="vote('Rohit')">
+        Vote Rohit
+    </button>
 
-        <button class="primary-btn full" type="submit">
-          Create Account
-        </button>
-      </form>
+    <h3>Voting Results</h3>
 
-      <form id="loginForm" hidden>
-        <label for="loginId">Voter ID</label>
-        <input id="loginId" type="text" maxlength="30"
-               placeholder="Enter your voter ID" required>
+    <p>Rahul: <span id="r">0</span></p>
+    <p>Aman: <span id="a">0</span></p>
+    <p>Rohit: <span id="ro">0</span></p>
 
-        <label for="loginPassword">Password</label>
-        <input id="loginPassword" type="password"
-               placeholder="Enter password" required>
+    <h3 id="message"></h3>
 
-        <button class="primary-btn full" type="submit">
-          Login
-        </button>
-      </form>
+</div>
 
-      <p id="authMessage" class="message" aria-live="polite"></p>
+<script>
 
-      <button id="logoutBtn" class="secondary-btn full"
-              type="button" onclick="logout()" hidden>
-        Logout
-      </button>
-    </section>
+let votes = {
+    Rahul: 0,
+    Aman: 0,
+    Rohit: 0
+};
 
-    <!-- Voting -->
-    <section class="section" id="candidates">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">MAKE YOUR CHOICE</p>
-          <h2>Meet the Candidates</h2>
-        </div>
-        <span class="demo-badge">DEMO ELECTION</span>
-      </div>
+let voted = [];
 
-      <p class="muted" id="voteMessage">
-        Login to cast your vote.
-      </p>
+function vote(candidate) {
 
-      <div class="candidate-grid" id="candidateList"></div>
-    </section>
+    let name = document.getElementById("name").value;
+    let voter = document.getElementById("voter").value;
 
-    <!-- Results -->
-    <section class="panel results-panel" id="results">
-      <p class="eyebrow">ELECTION STATISTICS</p>
-      <h2>Live Results</h2>
-      <p class="muted">Results update when a demo vote is submitted.</p>
+    if (name === "" || voter === "") {
+        alert("Please enter your details!");
+        return;
+    }
 
-      <div class="stats">
-        <div class="stat-card">
-          <span>Total Votes</span>
-          <strong id="totalVotes">0</strong>
-        </div>
-        <div class="stat-card">
-          <span>Candidates</span>
-          <strong id="totalCandidates">3</strong>
-        </div>
-      </div>
+    if (voted.includes(voter)) {
+        alert("You have already voted!");
+        return;
+    }
 
-      <div id="resultsList"></div>
+    votes[candidate]++;
+    voted.push(voter);
 
-      <p class="muted small">
-        Results are based only on this browser's and fire fox demo data.
-      </p>
-    </section>
+    document.getElementById("r").innerText = votes.Rahul;
+    document.getElementById("a").innerText = votes.Aman;
+    document.getElementById("ro").innerText = votes.Rohit;
 
-    <!-- Demo Admin Panel -->
-    <section class="panel admin-panel">
-      <h2>Admin Dashboard</h2>
-      <p class="muted">
-        Demo access only. This is not a secure administrator login.
-      </p>
-      <form id="adminForm">
-        <label for="adminPassword">Demo Admin Password</label>
-        <input id="adminPassword" type="password"
-               placeholder="Enter demo password" required>
-        <button class="secondary-btn" type="submit">
-          View Admin Summary
-        </button>
-      </form>
+    document.getElementById("message").innerText =
+        "Vote Successfully Submitted!";
 
-      <div id="adminSummary" hidden>
-        <h3>Election Summary</h3>
-        <p id="adminStats"></p>
-        <button class="danger-btn" type="button"
-                onclick="resetDemo()">
-          Reset All Demo Data
-        </button>
-      </div>
-      <p id="adminMessage" class="message" aria-live="polite"></p>
-    </section>
+}
 
-  </main>
+</script>
 
-  <footer>
-    <p>© 2026 VoteOnline | Educational Demo Project</p>
-    <p>Not for real elections or official voting.</p>
-  </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
